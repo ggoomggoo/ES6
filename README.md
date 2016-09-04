@@ -296,6 +296,268 @@ String.raw({raw: 'ABCDE', one, two, 3}); // A1B2C3DE
 // * 활용: dinamic한 문자열 생성, HTML 엘리먼트 속성값 파싱(id, class, style ...)
 ```
 
+## Array
+```
+* from
+
+```
+
+### Array iteration with for...of (Firefox 13)
+```
+```
+
+### Array.from() (Firefox 32)
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+* The Array.from() method creates a new Array instance from an array-like or iterable object.
+* Array.from(arrayLike[, mapFn[, thisArg]])
+
+```
+let arrayLike = {0: 'one', 1: 'two', length: 2};
+
+```
+
+```
+// Array-like object (arguments) to Array
+function f() {
+  return Array.from(arguments);
+}
+
+f(1, 2, 3); 
+// [1, 2, 3]
+```
+
+```
+let nodes = document.querySelect...('li');
+Array.from(nodes).forEach((node) => {
+    console.log(node.textContent);
+    })
+```
+
+### Array.of() (Firefox 25)
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of
+* The Array.of() method creates a new Array instance with a variable number of arguments, regardless of number or type of the arguments.
+* Array.of(element0[, element1[, ...[, elementN]]])
+```
+```
+
+### Array.prototype.fill() (Firefox 31)
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill
+* The fill() method fills all the elements of an array from a start index to an end index with a static value.
+* arr.fill(value[, start = 0[, end = this.length]])
+```
+[1, 2, 3].fill(4);               // [4, 4, 4]
+[1, 2, 3].fill(4, 1);            // [1, 4, 4]
+[1, 2, 3].fill(4, 1, 2);         // [1, 4, 3]
+[1, 2, 3].fill(4, 1, 1);         // [1, 2, 3]
+[1, 2, 3].fill(4, -3, -2);       // [4, 2, 3]
+[1, 2, 3].fill(4, NaN, NaN);     // [1, 2, 3]
+Array(3).fill(4);                // [4, 4, 4]
+[].fill.call({ length: 3 }, 4);  // {0: 4, 1: 4, 2: 4, length: 3}
+```
+
+### Array.prototype.find()
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+* The find() method returns a value in the array, if an element in the array satisfies the provided testing function. Otherwise undefined is returned.
+* arr.find(callback[, thisArg])
+* parameters
+```
+element
+The current element being processed in the array.
+
+index
+The index of the current element being processed in the array.
+
+array
+The array find was called upon.
+```
+
+* this binding에 주의(function vs arrow function)
+
+### Array.prototype.findIndex() (Firefox 25)
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+* The findIndex() method returns an index in the array, if an element in the array satisfies the provided testing function. Otherwise -1 is returned.
+* arr.findIndex(callback[, thisArg])
+- parameters
+```
+element
+The current element being processed in the array.
+index
+The index of the current element being processed in the array.
+array
+The array findIndex was called upon.
+```
+
+```
+```
+
+### Array.prototype.entries()
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries
+* The entries() method returns a new Array Iterator object that contains the key/value pairs for each index in the array.
+* arr.entries()
+```
+var arr = ['a', 'b', 'c'];
+var eArr = arr.entries();
+
+console.log(eArr.next().value); // [0, 'a']
+console.log(eArr.next().value); // [1, 'b']
+console.log(eArr.next().value); // [2, 'c']
+```
+
+```
+for (let e of eArr) {
+  console.log(e);
+}
+
+```
+
+```
+// 분해 할당 활용
+for (let [key, value] of eArr) {
+  console.log(key, ': ', value);
+}
+```
+
+### Array.prototype.keys() (Firefox 28)
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/keys
+* The keys() method returns a new Array Iterator that contains the keys for each index in the array.
+* arr.keys()
+* vs .entries(); vs .keys(); vs .values()
+```
+var arr = ["a", "b", "c"];
+var iterator = arr.keys();
+
+console.log(iterator.next()); // { value: 0, done: false }
+console.log(iterator.next()); // { value: 1, done: false }
+console.log(iterator.next()); // { value: 2, done: false }
+console.log(iterator.next()); // { value: undefined, done: true }
+```
+
+```
+var arr = ["a", , "c"];
+var sparseKeys = Object.keys(arr);
+var denseKeys = [...arr.keys()];
+console.log(sparseKeys); // ['0', '2']
+console.log(denseKeys);  // [0, 1, 2]
+```
+
+### Array.prototype.values()
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/values
+* The values() method returns a new Array Iterator object that contains the values for each index in the array.
+* arr.values()
+```
+var arr = ['w', 'y', 'k', 'o', 'p'];
+var eArr = arr.values();
+// your browser must support for..of loop
+// and let-scoped variables in for loops
+for (let letter of eArr) {
+  console.log(letter);
+}
+```
+
+### Array.prototype.copyWithin() (Firefox 32)
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin
+* The copyWithin() method shallow copies part of an array to another location in the same array and returns it, without modifying its size.
+* arr.copyWithin(target[, start[, end]])
+```
+[1, 2, 3, 4, 5].copyWithin(-2);
+// [1, 2, 3, 1, 2]
+
+[1, 2, 3, 4, 5].copyWithin(0, 3);
+// [4, 5, 3, 4, 5]
+
+[1, 2, 3, 4, 5].copyWithin(0, 3, 4);
+// [4, 2, 3, 4, 5]
+
+[1, 2, 3, 4, 5].copyWithin(-2, -3, -1);
+// [1, 2, 3, 3, 4]
+
+[].copyWithin.call({length: 5, 3: 1}, 0, 3);
+// {0: 1, 3: 1, length: 5}
+
+// ES6 Typed Arrays are subclasses of Array
+var i32a = new Int32Array([1, 2, 3, 4, 5]);
+
+i32a.copyWithin(0, 2);
+// Int32Array [3, 4, 5, 4, 5]
+
+// On platforms that are not yet ES6 compliant: 
+[].copyWithin.call(new Int32Array([1, 2, 3, 4, 5]), 0, 3, 4);
+// Int32Array [4, 2, 3, 4, 5]
+```
+
+```
+let one = Array.prototype.copyWithin.call({
+    0: 'ABC',
+    1: 'EDF',
+    2: '가나다',
+    length: 3
+    }, 0, 1);
+console.log(one); // 0: EDF, 1: 가나다, 2: 가나다
+```
+
+* The copyWithin function is intentionally generic, it does not require that its this value be an Array object.
+- copyWithin() 은 Array 메서드이므로 Array가 처리 대상
+- 이때 generic은 array-like, interable object도 처리 할 수 있다는 의미
+```
+Array.prototype.copyWithin.call(...);
+```
+
+### get Array[@@species] (Firefox 48)
+```
+```
+
+## RegExp
+```
+```
+
+## Function
+```
+```
+
+## Iterator
+```
+```
+
+## Generator
+```
+```
+
+## Symbol
+```
+```
+
+## 
+```
+```
+
+## 
+```
+```
+
+## 
+```
+```
+
+## 
+```
+```
+
+## 
+```
+```
+
+## 
+```
+```
+
+## 
+```
+```
+
+## 
+```
+```
+
 ## 성능
 ```
 * server side 에서의 퍼포먼스 필요
