@@ -576,6 +576,9 @@ console.log(regex.lastIndex); // logs '15'
 
 ## Generator
 ```
+* ref
+- https://gist.github.com/marocchino/841e2ff62f59f420f9d9
+- http://blog.hazard.kr/archives/399
 ```
 
 ### Generator function (Firefox 26)
@@ -777,6 +780,76 @@ console.log(iterator.next()); // { value: 5, done: false }
 console.log(iterator.next()); // { value: undefined, done: true }
 ```
 
+## Class
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+* class method 특징
+- ,(콤마) 미사용ㄴ
+- typeof 값 'function'
+* https://hacks.mozilla.org/2015/07/es6-in-depth-classes/
+
+```
+```
+
+### Defining classes
+```
+class Polygon {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+}
+```
+
+```
+class Polygon extends SuperPolygon {
+```
+
+### Class declarations
+```
+* method vs function
+```
+
+### Hoisting
+```
+```
+
+### Class expressions
+```
+```
+
+### Class body and method definitions
+```
+```
+
+### Strict mode
+```
+```
+
+### Constructor
+```
+```
+
+### Prototype methods
+```
+```
+
+### Static methods
+```
+```
+
+### Sub classing with extends
+```
+```
+
+### Species
+```
+```
+
+### Super class calls with super
+```
+```
+
 ## Function
 ```
 ```
@@ -826,4 +899,9 @@ console.log(iterator.next()); // { value: undefined, done: true }
 * server side 에서의 퍼포먼스 필요
 - memory leak 해결
 - ES6 반영(bite)
+```
+
+## 기타
+* https://babeljs.io/repl
+```
 ```
