@@ -574,16 +574,214 @@ console.log(regex.lastIndex); // logs '15'
 ```
 ```
 
+## Generator
+```
+```
+
+### Generator function (Firefox 26)
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
+* The function* declaration (function keyword followed by an asterisk) defines a generator function, which returns a Generator object.
+* function* name([param[, param[, ... param]]]) { statements... }
+* 제너레이터 함수를 호출하면
+- 함수 블록을 실행하지 않고
+- Generator 오브젝트를 생성하여 반환
+- 반환된 오브젝트는 이터레이터 오브젝트
+
+```
+function* idMaker(){
+  var index = 0;
+  while(index < 3)
+    yield index++;
+}
+
+var gen = idMaker();
+
+console.log(gen.next().value); // 0
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // undefined
+// ...
+```
+
+### GeneratorFunction
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction
+* The GeneratorFunction constructor creates a new generator function object. In JavaScript every generator function is actually a GeneratorFunction object.
+* Object.getPrototypeOf(function*(){}).constructor
+* new GeneratorFunction ([arg1[, arg2[, ...argN]],] functionBody)
+
+```
+var GeneratorFunction = Object.getPrototypeOf(function*(){}).constructor
+var g = new GeneratorFunction("a", "yield a * 2");
+var iterator = g(10);
+console.log(iterator.next().value); // 20
+```
+
+### yield (Firefox 26)
+
+* The yield keyword is used to pause and resume a generator function (function* or legacy generator function).
+* [rv] = yield [expression];
+* yield 키워드는 제너레이터 함수를 멈추거나 다시 실행에 사용
+* yield 오른쪽의 표현식을 평가하고 결과 반환
+- 표현식을 작성하지 않으면 undefined 반환
+* [rv]
+- 오른쪽의 평가 결과가 설정하는 것이 아니라
+- 다음 next()에서 파라미터에 지정한 값이 설정됨
+
+```
+function* foo(){
+  var index = 0;
+  while (index <= 2)
+    yield index++;
+}
+
+var iterator = foo();
+console.log(iterator.next()); // { value: 0, done: false }
+console.log(iterator.next()); // { value: 1, done: false }
+console.log(iterator.next()); // { value: 2, done: false }
+console.log(iterator.next()); // { value: undefined, done: true }
+```
+
+```
+fnction* sports(one) {
+    let two = yield one;
+    let param = yield two + one;
+    yield param + one;
+}
+
+let genObj = sports(10);
+
+console.log(genObj.next());
+console.log(genObj.next());
+console.log(genObj.next(20));
+```
+
+```
+function* sports(one) {
+    yield one;
+    let check = 10;
+}
+
+let genObj = sprots(10);
+
+let result = genObj.next();
+console.log(result); // {value: 10, done: false}
+
+result = genObj.next();
+console.log(result); // {value: undefined, done: true}
+```
+
+```
+let gen = function* (param) {
+    let one = param + 1;
+    yield one;
+    var two = 2;
+    yield one + two;
+}
+let genObj = gen(10);
+console.log(genObj.next()); // {value: 11, done: false}
+console.log(genObj.next()); // {value: 13, done: false}
+console.log(genObj.next()); // {value: undefined, done: true} // ?
+```
+
+```
+let gen = function* () {
+    one = yeild;
+    two = yield one + 10;
+}
+let genObj = gen();
+console.log(genObj.next()); // undefined
+console.log(genObj.next(12)); // 22
+console.log(genObj.next(34)); // undefined, true
+```
+
+```예제 시나리오
+* 금액 계산 함수와 할인 금액 계산 함수가 있음
+* 금액 계산 함수는 수량과 단가를 파라미터로 받아 금액을 계산하고 결과를 yeild로 반환
+* 할인 금액 계산 함수 호출
+- yield로 반환한 값을 파라미터 값으로 넘겨 줌
+- 할인 금액을 계산하여 반환
+* 금액 계산 함수를 호출하면서
+- 할인 금액을 파라미터 값으로 넘겨 줌
+- 할인 금액 - 할인 금액 결과 반환
+```
+
+```
+let getAmount = function* (qty, price) {
+    let amount = Math.floor(qty * price);
+    let discount = yeild amount;
+    return amount - discount; // return
+}
+let getDiscount = function(amount) {
+    return amount > 1000 ? amount * 0.2 : amount * 0.1;
+}
+let amountObj = getAmount(10, 60);
+let result = amountObj.next();
+console.log(result); // {value: 600, done: false}
+
+let dcAmount = getDiscount(result.value);
+console.log(dcAmount); // 60
+
+result = amountObj.next(dcAmount);
+console.log(result); // {value: 540, done: true}
+```
+
+```
+let genObj = function* () {
+    return yeild yeild yeild;
+}
+let gen = genObj();
+console.log(gen.next()); // undefined, false
+console.log(gen.next(10)); // 10, false
+console.log(gen.next(20)); // 20, false
+console.log(gen.next(30)); // 30, true
+```
+
+```
+let gen = function* (start) {
+    let count = start;
+    while (true) {
+        yield ++count;
+    }
+}
+for (let cnt of gen(10)) {
+    console.log(cnt);
+    if (cnt > 13) {
+        break;
+    }
+}
+```
+
+### yield* (Firefox 27)
+```
+function* g1() {
+  yield 2;
+  yield 3;
+  yield 4;
+}
+
+function* g2() {
+  yield 1;
+  yield* g1();
+  yield 5;
+}
+
+var iterator = g2();
+
+console.log(iterator.next()); // { value: 1, done: false }
+console.log(iterator.next()); // { value: 2, done: false }
+console.log(iterator.next()); // { value: 3, done: false }
+console.log(iterator.next()); // { value: 4, done: false }
+console.log(iterator.next()); // { value: 5, done: false }
+console.log(iterator.next()); // { value: undefined, done: true }
+```
 
 ## Function
 ```
 ```
 
 ## Iterator
-```
-```
-
-## Generator
 ```
 ```
 
