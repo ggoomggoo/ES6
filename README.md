@@ -253,39 +253,52 @@ let result = jamo.normalize('NFC');
 Template literals
 ```
 
-## 
+## Template literals
+```
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+* 문자열과 표현식(${...})로 구성
+```
+
+### Multi-line strings
 ```
 ```
 
-## 
+### Expression interpolation
 ```
 ```
 
-## 
+### Tagged template literals
 ```
+var a = 5;
+var b = 10;
+
+function tag(strings, ...values) {
+  console.log(strings[0]); // "Hello "
+  console.log(strings[1]); // " world "
+  console.log(strings[2]); // ""
+  console.log(values[0]);  // 15
+  console.log(values[1]);  // 50
+
+  return "Bazinga!";
+}
+
+tag`Hello ${ a + b } world ${ a * b }`;
+// "Bazinga!"
 ```
 
-## 
+### Raw strings
 ```
+// * 역슬레시를 문자자체로 인식
+
+let oen = 1, two = 2;
+String.raw({raw: 'ABCDE', one, two, 3}); // A1B2C3DE
+
+// * 활용: dinamic한 문자열 생성, HTML 엘리먼트 속성값 파싱(id, class, style ...)
 ```
 
-## 
+## 성능
 ```
+* server side 에서의 퍼포먼스 필요
+- memory leak 해결
+- ES6 반영(bite)
 ```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
