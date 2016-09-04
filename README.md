@@ -510,6 +510,71 @@ Array.prototype.copyWithin.call(...);
 ```
 ```
 
+### RegExp sticky (y) flag (Firefox 38)
+
+* The sticky flag indicates that the regular expression performs sticky matching in the target string by attempting to match starting at RegExp.prototype.lastIndex.
+* 정규 표현식은
+- 매치된 문자열의 인덱스를 lastIndex에 설정
+* y(sticky) 플래스
+- lastIndex 위치부터 매치 수행
+- 디폴트: 0
+- ^패턴을 사용하지 않으면 첫 문자부터 매치
+
+```
+var str = '#foo#';
+var regex = /foo/y;
+
+regex.lastIndex = 1;
+regex.test(str); // true
+regex.lastIndex = 5;
+regex.test(str); // false (lastIndex is taken into account with sticky flag)
+regex.lastIndex; // 0 (reset after match failure)
+```
+
+### RegExp unicode (u) flag (Firefox 46)
+
+* As mentioned above, \w or \W only matches ASCII based characters; for example, "a" to "z", "A" to "Z", "0" to "9" and "_". To match characters from other languages such as Cyrillic or Hebrew, use \uhhhh, where "hhhh" is the character's Unicode value in hexadecimal. This example demonstrates how one can separate out Unicode characters from a word.
+
+```
+var text = 'Образец text на русском языке';
+var regex = /[\u0400-\u04FF]+/g;
+
+var match = regex.exec(text);
+console.log(match[0]);        // logs 'Образец'
+console.log(regex.lastIndex); // logs '7'
+
+var match2 = regex.exec(text);
+console.log(match2[0]);       // logs 'на' [did not log 'text']
+console.log(regex.lastIndex); // logs '15'
+
+// and so on
+```
+
+### generic RegExp.prototype.toString (Firefox 39)
+```
+```
+
+### RegExp.prototype[@@match]() (Firefox 49)
+```
+```
+
+### RegExp.prototype[@@replace]() (Firefox 49)
+```
+```
+
+### RegExp.prototype[@@search]() (Firefox 49)
+```
+```
+
+### RegExp.prototype[@@split]() (Firefox 49)
+```
+```
+
+### get RegExp[@@species] (Firefox 49)
+```
+```
+
+
 ## Function
 ```
 ```
