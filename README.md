@@ -699,7 +699,9 @@ console.log(genObj.next(12)); // 22
 console.log(genObj.next(34)); // undefined, true
 ```
 
-```예제 시나리오
+```
+# 예제 시나리오
+
 * 금액 계산 함수와 할인 금액 계산 함수가 있음
 * 금액 계산 함수는 수량과 단가를 파라미터로 받아 금액을 계산하고 결과를 yeild로 반환
 * 할인 금액 계산 함수 호출
@@ -784,7 +786,7 @@ console.log(iterator.next()); // { value: undefined, done: true }
 
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
 * class method 특징
-- ,(콤마) 미사용ㄴ
+- ,(콤마) 미사용
 - typeof 값 'function'
 * https://hacks.mozilla.org/2015/07/es6-in-depth-classes/
 
@@ -811,6 +813,9 @@ class Polygon extends SuperPolygon {
 ```
 
 ### Hoisting
+
+* 호이스팅 되지 않음
+
 ```
 ```
 
@@ -828,6 +833,17 @@ class Polygon extends SuperPolygon {
 
 ### Constructor
 ```
+class Sports {
+  constructor() {
+    let ground = Sports.getGround();
+    console.log(groud);
+    ground = this.constructor.getGround();
+    console.log(ground);
+  }
+  static getGround() {
+    return '상암 구장';
+  }
+}
 ```
 
 ### Prototype methods
@@ -849,6 +865,75 @@ class Polygon extends SuperPolygon {
 ### Super class calls with super
 ```
 ```
+
+### Custom Elements with Classes
+
+* https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements/Custom_Elements_with_Classes
+* Custom Element is a custom HTML tag and/or element that give us the tool to extend HTML's vocabulary and teaching it new tricks. It is different than normal tags as it can use lifecycle callbacks, which enable you to attach behaviors to different parts of the new element's "lifecycle." it can be built based on the general HTMLElement, or as extends of native element like <button>
+* class SaveBtn extends HTMLElement {}
+
+```
+class ExtendsImages extends Image {
+  constructor() {
+    super();
+  }
+  setProperty() {
+    this.src = 'file/image.jsp';
+    this.alt = '';
+    this.title = '';
+  }
+}
+let obj = new ExtendsImages();
+obj.setProperty();
+document.querySelector('body').appendChild(obj);
+```
+
+```
+class ExtendsAudio extends Audio {
+  // ...
+}
+```
+
+### class vs function
+
+* 경우에 따라서는 function 이 좋다
+* 설계는 필수적
+  - 경험이 필요함(5년 정도)
+  - 작은 프로젝트라도 설계 연습 할 것
+
+```
+```
+
+---
+
+## new.target
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target
+* The new.target property lets you detect whether a function or constructor was called using the new operator. In constructors and functions instantiated with the new operator, new.target returns a reference to the constructor or function. In normal function calls, new.target is undefined.
+* new.target
+* cunstuctor 함수를 참조함
+
+```
+let sports = function() {
+  console.log(new.target) // 
+  let target = new.target ? new.target.name : undefined;
+  console.log(target);
+}
+sports(); // 
+new sports(); // 
+```
+
+```
+function Foo() {
+  if (!new.target) throw "Foo() must be called with new";
+  console.log("Foo instantiated with new");
+}
+
+Foo(); // throws "Foo() must be called with new"
+new Foo(); // logs "Foo instantiated with new"
+```
+
+---
 
 ## Function
 ```
