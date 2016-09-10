@@ -904,7 +904,7 @@ class ExtendsAudio extends Audio {
 ```
 ```
 
----
+***
 
 ## new.target
 
@@ -933,7 +933,7 @@ Foo(); // throws "Foo() must be called with new"
 new Foo(); // logs "Foo instantiated with new"
 ```
 
----
+***
 
 ## Symbol
 
@@ -1015,6 +1015,7 @@ class Sports {
 * Symbol.species
   - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species
   - A constructor function that is used to create derived objects.
+  - The species accessor property allows subclasses to over-ride the default constructor for objects.
   - 사전적 의미: (공통 특성을 지닌) 종류, 인류, 종
 
 ```
@@ -1027,6 +1028,65 @@ var mapped = a.map(x => x * x);
 
 console.log(mapped instanceof MyArray); // false
 console.log(mapped instanceof Array);   // true
+```
+
+```
+class ExtendOne extends Array {
+  showOne() {
+    console.log('ExtendOne');
+  }
+};
+
+class ExtendTwo extends Array {
+  // 함수가 호출되면 자신을 반환하지 않고 앞에 작성한 ExtendOne class 반환
+  // 이와 같이 반환 값을 바꿀 수 있음
+  static get [Symbol.species]() {
+    return ExtendOne;
+    // return null // null 인 경우 default constructor(이 경우Array) 가 호출. 
+  }
+  showTwo() {
+    console.log('ExtendTow');
+  }
+};
+
+let twoInstance = new ExtendTwo(10, 20, 30);
+twoInstance = twoInstance.filter(value => value > 10);
+console.log(twoInstance); // 20, 30
+twoInstance.showOne(); // ExtendOne
+console.log(twoInstance.showTwo); // undefined
+
+// 도중에 인스턴스가 변경되었으므로 twoInstance에 ExtendOne으로 생성한 인스턴스가 할당.
+```
+
+* Symbol.toPrimitive
+  - A method converting an object to a primitive value.
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive
+  - With the help of the Symbol.toPrimitive property (used as a function value), an object can be converted to a primitive value. The function is called with a string argument hint, which specifies the preferred type of the result primitive value. The hint argument can be one of "number", "string", and "default".
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/@@toPrimitive
+  - Symbol()[Symbol.toPrimitive](hint);
+
+```
+// An object without Symbol.toPrimitive property.
+var obj1 = {};
+console.log(+obj1);     // NaN
+console.log(`${obj1}`); // "[object Object]"
+console.log(obj1 + ""); // "[object Object]"
+
+// An object with Symbol.toPrimitive property.
+var obj2 = {
+  [Symbol.toPrimitive](hint) {
+    if (hint == "number") {
+      return 10;
+    }
+    if (hint == "string") {
+      return "hello";
+    }
+    return true;
+  }
+};
+console.log(+obj2);     // 10      -- hint is "number"
+console.log(`${obj2}`); // "hello" -- hint is "string"
+console.log(obj2 + ""); // "true"  -- hint is "default"
 ```
 
 * Object.method 호출 시 Object Instance 를 반환함
@@ -1097,26 +1157,80 @@ obj[sym];            // 1
 obj[Object(sym)];    // still 1
 ```
 
+---
 
 ### Symbol.iterator (Firefox 36)
 
-* 
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator
+  - Array.prototype[@@iterator]()
+  - TypedArray.prototype[@@iterator]()
+  - String.prototype[@@iterator]()
+  - Map.prototype[@@iterator]()
+  - Set.prototype[@@iterator]()
 
 ```
+var myIterable = {}
+myIterable[Symbol.iterator] = function* () {
+    yield 1;
+    yield 2;
+    yield 3;
+};
+[...myIterable] // [1, 2, 3]
 ```
 
 ### Symbol.for() - global Symbol registry (Firefox 36)
 
-* 
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match
+* The Symbol.for(key) method searches for existing symbols in a runtime-wide symbol registry with the given key and returns it if found. Otherwise a new symbol gets created in the global symbol registry with this key.
+* Symbol.for(key);
+* 특징
+  - global symbol registry
+  - {key: value} 형태로 저장
+  - 파라미터값이 key
+  - Symbol()로 생성한 값이 value
+* 특징
+  - 파라미터 key 값을 유일하도록 정의하면 유용(ex. Symbol.for("user.age"))
 
 ```
+console.log(Symbol('abc') === Symbol('abc')); // false
+console.log(Symbol('abc') === Symbol.for('abc')); // false
+console.log(Symbol.for('abc') === Symbol.for('abc')); // true
+```
+
+### Symbol.keyFor()
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/keyFor
+* The Symbol.keyFor(sym) method retrieves a shared symbol key from the global symbol registry for the given symbol.
+* Symbol.keyFor(sym);
+
+```
+var globalSym = Symbol.for("foo"); // create a new global symbol
+Symbol.keyFor(globalSym); // "foo"
+
+var localSym = Symbol();
+Symbol.keyFor(localSym); // undefined
+
+// well-known symbols are not symbols registered 
+// in the global symbol registry
+Symbol.keyFor(Symbol.iterator) // undefined
 ```
 
 ### Symbol.match (Firefox 40)
 
-* 
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match
 
 ```
+class Ga {
+  constructor(base) {
+    this.base = base;
+  }
+  [Symbol.match](target) {
+    return this.base.indexOf(target) < 0 ? false : true;
+  }
+}
+
+var ga = new Ga('sports');
+'po'.match(ga); // true
 ```
 
 ### Symbol.species (Firefox 41)
@@ -1168,6 +1282,49 @@ obj[Object(sym)];    // still 1
 ```
 ```
 
+### Object.getOwnPropertySymbols()
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols
+* Object.getOwnPropertySymbols(obj)
+
+```
+var obj = {};
+var a = Symbol('a');
+var b = Symbol.for('b');
+
+obj[a] = 'localSymbol';
+obj[b] = 'globalSymbol';
+
+var objectSymbols = Object.getOwnPropertySymbols(obj);
+
+console.log(objectSymbols.length); // 2
+console.log(objectSymbols);        // [Symbol(a), Symbol(b)]
+console.log(objectSymbols[0]);     // Symbol(a)
+```
+
+### JSON.stringify()
+
+* https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+* All symbol-keyed properties will be completely ignored, even when using the replacer function.
+* Symbol은 변환하지 않음
+
+```
+// Symbols:
+JSON.stringify({ x: undefined, y: Object, z: Symbol('') });
+// '{}'
+JSON.stringify({ [Symbol('foo')]: 'foo' });
+// '{}'
+JSON.stringify({ [Symbol.for('foo')]: 'foo' }, [Symbol.for('foo')]);
+// '{}'
+JSON.stringify({ [Symbol.for('foo')]: 'foo' }, function(k, v) {
+  if (typeof k === 'symbol') {
+    return 'a symbol';
+  }
+});
+// '{}'
+```
+
+***
 
 ## Function
 ```
