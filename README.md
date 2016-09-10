@@ -935,15 +935,245 @@ new Foo(); // logs "Foo instantiated with new"
 
 ---
 
+## Symbol
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+* A symbol is a unique and immutable data type and may be used as an identifier for object properties. The Symbol object is an implicit object wrapper for the symbol primitive data type.
+* Symbol([description])
+* 특징
+  - 생성한 값은 프로그램 전체를 통틀어 유일한 값으로 엔진 차원에서 관리(in 다른 라이브러리, 프레임워크...)
+  - +, | 연산자 사용 불가(+: Number 타입으로 캐스팅)
+  - template(`${...}`) 사용불가
+
+```
+var sym1 = Symbol();
+var sym2 = Symbol("foo");
+var sym3 = Symbol("foo");
+```
+
+```
+console.log(String(Symbol('심볼'))); // Symbol(심볼)
+```
+
+### primitive data
+
+* 자바스크립트에 Primitive 개념이 있음
+  - 오브젝트가 아닌 데이터
+  - 따라서 메소드를 갖고 있지 않음
+* let num = 123;
+  - num에 123만 할당되고 아무것도 첨부되지 않음
+  - 123은 number data로 primitive
+* ES5의 primitive data
+  - string, number, boolean, null, undefined
+* ES6에 symbol이 추가됨
+* wrapper object
+  - string: String
+  - number: Number
+  - boolean: Boolean
+  - symbol: Symbol
+* undefined, null은 없음
+* wrapper 오브젝는 메소드가 존재
+
+```
+```
+
+### Symbol 사용 형태
+
+* Ojbect 프로퍼티 이름으로 사용
+  - symbol-keyed property
+* for-in
+  - 프로퍼티 이름으로 Symbol이 열거되지 않음
+* 메소드 이름
+* JSON.stringify()
+  - Symbol 값이 문자열로 변환 불가
+
+```
+```
+
+### Well-known symbols
+
+* Symbol.toStringTag
+  - A string value used for the default description of an object. Used by Object.prototype.toString().
+
+```
+class Sports {
+  get [Symbol.toStringTag]() {
+    return 'Sports-class';
+  }
+}
+```
+
+* Symbol.isConcatSpreadable
+  - A Boolean value indicating if an object should be flattened to its array elements. Used by Array.prototype.concat().
+
+```
+```
+
+* Symbol.unscopables
+  - An object value of whose own and inherited property names are excluded from the with environment bindings of the associated object.
+
+* Symbol.species
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species
+  - A constructor function that is used to create derived objects.
+  - 사전적 의미: (공통 특성을 지닌) 종류, 인류, 종
+
+```
+class MyArray extends Array {
+  // Overwrite species to the parent Array constructor
+  static get [Symbol.species]() { return Array; }
+}
+var a = new MyArray(1,2,3);
+var mapped = a.map(x => x * x);
+
+console.log(mapped instanceof MyArray); // false
+console.log(mapped instanceof Array);   // true
+```
+
+* Object.method 호출 시 Object Instance 를 반환함
+
+```
+let sliceOne = [1, 2, 3].slice(1, 3); // Instance 반환
+let sliceTwo = sliceOne.pop();
+```
+
+### Iteration symbols
+
+* 
+
+```
+```
+
+### Regular expression symbols
+
+* 
+
+```
+```
+
+### Other symbols
+
+* 
+
+```
+```
+
+
+### Using the typeof operator with symbols
+
+* 
+
+```
+```
+
+### Symbol type conversions
+
+* 
+
+```
+```
+
+### Symbols and for...in iteration
+
+* 
+
+```
+```
+
+### Symbols and JSON.stringify()
+
+* 
+
+```
+```
+
+### Symbol wrapper objects as property keys
+
+* When a Symbol wrapper object is used as a property key, this object will be coerced to its wrapped symbol:
+
+```
+var sym = Symbol("foo");
+var obj = {[sym]: 1};
+obj[sym];            // 1
+obj[Object(sym)];    // still 1
+```
+
+
+### Symbol.iterator (Firefox 36)
+
+* 
+
+```
+```
+
+### Symbol.for() - global Symbol registry (Firefox 36)
+
+* 
+
+```
+```
+
+### Symbol.match (Firefox 40)
+
+* 
+
+```
+```
+
+### Symbol.species (Firefox 41)
+
+* 
+
+```
+```
+
+### Symbol.toPrimitive (Firefox 44)
+
+* 
+
+```
+```
+
+### Symbol.prototype[@@toPrimitive] (Firefox 44)
+
+* 
+
+```
+```
+
+### Symbol.replace (Firefox 49)
+
+* 
+
+```
+```
+
+### Symbol.search (Firefox 49)
+
+* 
+
+```
+```
+
+### Symbol.split (Firefox 49)
+
+* 
+
+```
+```
+
+### Symbol.hasInstance (Firefox 50)
+
+* 
+
+```
+```
+
+
 ## Function
 ```
 ```
 
 ## Iterator
-```
-```
-
-## Symbol
 ```
 ```
 
