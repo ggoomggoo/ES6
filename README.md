@@ -1326,6 +1326,284 @@ JSON.stringify({ [Symbol.for('foo')]: 'foo' }, function(k, v) {
 
 ***
 
+## Proxy
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+* The Proxy object is used to define custom behavior for fundamental operations (e.g. property lookup, assignment, enumeration, function invocation, etc).
+* var p = new Proxy(target, handler);
+  - target
+  - handler
+  - traps: The methods that provide property access. This is analogous to the concept of traps in operating systems.
+* Proxy 객체는 일반적인 형태의 Object가 아님
+
+```
+```
+
+### Methods of the handler object
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Methods_of_the_handler_object
+
+```
+```
+
+### Basic example
+
+* handler 메소드 종류는 13가지(Object 마다 차이 있음). 각 메소드마다 argument가 다름. 각각 확인 할 것.
+
+```
+var handler = {
+    get: function(target, name){
+        return name in target?
+            target[name] :
+            37;
+    }
+};
+
+var p = new Proxy({}, handler);
+p.a = 1;
+p.b = undefined;
+
+console.log(p.a, p.b); // 1, undefined
+console.log('c' in p, p.c); // false, 37
+```
+
+---
+
+### Proxy/handler
+
+#### handler.apply()
+
+* 
+
+```
+function getValue(...values) {
+  let sum = 0;
+  for (const value of values) {
+    sum += value;
+  }
+  return sum;
+}
+
+let newProxy = new Proxy(getValue, {
+  apply(target, thisObj, args) {
+    return target.apply(thisObj. args);
+  }
+});
+
+console.log(newProxy.getValue('', 1, 2, 3));
+console.log(newProxy.getValue.call('', 1, 2, 3));
+console.log(newProxy.getValue.apply('', [1, 2, 3]));
+```
+
+#### handler.construct()
+
+* 
+
+```
+```
+
+#### handler.defineProperty()
+
+* 
+
+```
+```
+
+#### handler.deleteProperty()
+
+* 
+
+```
+```
+
+#### handler.enumerate()
+
+* 
+
+```
+```
+
+#### handler.get()
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/get
+* get: function(target, property, receiver) {}
+
+```
+var p = new Proxy({}, {
+  get: function(target, prop, receiver) {
+    console.log("called: " + prop);
+    return 10;
+  }
+});
+
+console.log(p.a); // "called: a"
+                  // 10
+```
+
+#### handler.getOwnPropertyDescriptor()
+
+* 
+
+```
+```
+
+#### handler.getPrototypeOf()
+
+* 
+
+```
+```
+
+#### handler.has()
+
+* 
+
+```
+var p = new Proxy({}, {
+  has: function(target, prop) {
+    console.log("called: " + prop);
+    return true;
+  }
+});
+
+console.log("a" in p); // "called: a"
+                       // true
+```
+
+#### handler.isExtensible()
+
+* 
+
+```
+```
+
+#### handler.ownKeys()
+
+* 
+
+```
+```
+
+#### handler.preventExtensions()
+
+* 
+
+```
+```
+
+#### handler.set()
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/set
+* set: function(target, property, value, receiver) {}
+
+```
+var p = new Proxy({}, {
+  set: function(target, prop, value, receiver) {
+    console.log("called: " + prop + " = " + value);
+    return true;
+  }
+});
+
+p.a = 10; // "called: a = 10"
+```
+
+#### handler.setPrototypeOf()
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/setPrototypeOf
+* interceptions
+  - Object.setPrototypeOf()
+  - Reflect.setPrototypeOf()
+
+```
+var handlerReturnsFalse = {
+    setPrototypeOf(target, newProto) {
+        return false;
+    }
+};
+
+var newProto = {}, target = {};
+
+var p1 = new Proxy(target, handlerReturnsFalse);
+Object.setPrototypeOf(p1, newProto); // throws a TypeError
+Reflect.setPrototypeOf(p1, newProto); // returns false
+```
+
+### No-op forwarding proxy
+
+* 
+
+```
+```
+
+### Validation
+
+* With a Proxy, you can easily validate the passed value for an object. This example uses the set handler.
+* 유효성 검사(타입, 범위...)
+  - Error
+    + List of errors
+      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors
+
+```
+let validator = {
+  set: function(obj, prop, value) {
+    if (prop === 'age') {
+      if (!Number.isInteger(value)) {
+        throw new TypeError('The age is not an integer');
+      }
+      if (value > 200) {
+        throw new RangeError('The age seems invalid');
+      }
+    }
+
+    // The default behavior to store the value
+    obj[prop] = value;
+  }
+};
+
+let person = new Proxy({}, validator);
+
+person.age = 100;
+console.log(person.age); // 100
+person.age = 'young'; // Throws an exception
+person.age = 300; // Throws an exception
+```
+
+### Extending constructor
+
+* 
+
+```
+```
+
+### Manipulating DOM nodes
+
+* 
+
+```
+```
+
+### Value correction and an extra property
+
+* 
+
+```
+```
+
+### Finding an array item object by its property
+
+* 
+
+```
+```
+
+### A complete traps list example
+
+* 
+
+```
+```
+
+
 ## Function
 ```
 ```
