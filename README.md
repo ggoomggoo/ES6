@@ -2062,14 +2062,20 @@ for (var [key, value] of myMap.entries()) {
 // Will show 2 logs; first with "0 = zero" and second with "1 = one"
 ```
 
-## Set
-
-* 
-
-```
-```
-
 ## WeakMap
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap
+* The WeakMap object is a collection of key/value pairs in which the keys are weakly referenced. **The keys must be objects** and the values can be arbitrary values.
+* new WeakMap([iterable])
+* 메모리 효율 향상
+  - Map에서 key가 참조하는 object가 바뀌면 참조했던 object를 참조 할 수 없으므로 gc 대상이 된다.
+* Why WeakMap
+  - The experienced JavaScript programmer will notice that this API could be implemented in JavaScript with two arrays (one for keys, one for values) shared by the four API methods. Such an implementation would have two main inconveniences. The first one is an O(n) search (n being the number of keys in the map). The second one is a memory leak issue. With manually written maps, the array of keys would keep references to key objects, preventing them from being garbage collected. In native WeakMaps, references to key objects are held "weakly", which means that they do not prevent garbage collection in case there would be no other reference to the object.
+
+```
+```
+
+## Set
 
 * 
 
@@ -2082,8 +2088,6 @@ for (var [key, value] of myMap.entries()) {
 
 ```
 ```
-
-
 
 ## Function
 ```
