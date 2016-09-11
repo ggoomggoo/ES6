@@ -1608,6 +1608,7 @@ person.age = 300; // Throws an exception
 ## Typed Arrays
 
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+* https://github.com/ES678/Exploring-ES6/tree/master/20%20%ED%98%95%EC%A7%80%EC%A0%95%20%EB%B0%B0%EC%97%B4
 * 자바스크립트에서 Array는 엘리먼트 추가/삭제 용이
   - 반면, 배열 길이가 유동적이라면 처리 속도에 영향을 미침
 * Array 처리 매커니즘
@@ -1675,8 +1676,24 @@ var view   = new Int32Array(buffer); // [0, 0, 0, 0, 0, 0, 0, 0]
 ### DataView
 
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
+* new DataView(buffer [, byteOffset [, byteLength]])
 
 ```
+var buffer = new ArrayBuffer(16);
+var dv = new DataView(buffer, 0);
+
+dv.setInt16(1, 42);
+dv.getInt16(1); //42
+```
+
+```
+var littleEndian = (function() {
+  var buffer = new ArrayBuffer(2);
+  new DataView(buffer).setInt16(0, 256, true /* littleEndian */);
+  // Int16Array uses the platform's endianness.
+  return new Int16Array(buffer)[0] === 256;
+})();
+console.log(littleEndian); // true or false
 ```
 
 ### Int8Array
