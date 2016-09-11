@@ -2075,57 +2075,34 @@ for (var [key, value] of myMap.entries()) {
 ```
 ```
 
+***
+
 ## Set
 
-* 
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+* The Set object lets you store unique values of any type, whether primitive values or object references.
+* new Set([iterable]);
 
 ```
 ```
+
+### Set.prototype.add(value)
+
+### Set.prototype.keys()
+
+* Is the same function as the **values()** function and returns a new Iterator object that contains the values for each element in the Set object in insertion order.
+
+*** 
 
 ## WeakSet
 
-* 
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet
+* The WeakSet object lets you store weakly held objects in a collection.
+*  new WeakSet([iterable]);
+*  특징
+  -  In contrast to Sets, WeakSets are **collections of objects only** and not of arbitrary values of any type.
+  -  The WeakSet is weak: References to objects in the collection are held weakly. If there is no other reference to an object stored in the WeakSet, they can be garbage collected. That also means that there is no list of current objects stored in the collection. WeakSets are not enumerable.
 
-```
-```
-
-## Function
-```
-```
-
-## Iterator
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
-```
-```
-
-## 
 ```
 ```
 
