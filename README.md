@@ -1603,6 +1603,152 @@ person.age = 300; // Throws an exception
 ```
 ```
 
+*** 
+
+## Typed Arrays
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+* 자바스크립트에서 Array는 엘리먼트 추가/삭제 용이
+  - 반면, 배열 길이가 유동적이라면 처리 속도에 영향을 미침
+* Array 처리 매커니즘
+  - **배열의 길이가 조정되는 것을 최소화하기 위해 엘리먼트를 삭제하면 그 위치에 undefined 설정**
+  - 배열을 읽을 때 undefined로 설정된 엘리먼트 제외
+  - 삭제한 엘리먼트 위치에 다음 엘리먼트를 당겨서 설정하고 다시 당겨서 설정하면 처리 속도가 떨어짐
+* 메모리 측면의 자바스크립트 단점
+  - **62bit(8byte)를 사용하므로 필요 이상의 메모리 차지**
+  - 숫자 1은 1바이트면 충분
+  - 작은 데이터는 문제가 없지만, 이미지 같은 chunk 데이터는 문제
+* Typed Arrays 필요성
+  - **배열 길이가 변하지 않는 형태 필요**
+  - 숫자 1 표현에 바이너리(binary)로 1 바이트 사용
+  - **값을 메모리에 설정하려면 바이너리로 변환 필요**
+  - 처음부터 바이너리로 저장하므로 변환 처리 불필요
+* 출현 배경
+  - **WebGL**에서 스펙 작성, 현재는 ES6로 통합.
+* 활용
+  - 바이너리 데이터
+    + https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+    + http://www.html5rocks.com/en/tutorials/webgl/typed_arrays/?redirect_from_locale=ko
+  - Buffer
+    + 메모리에 바이너리 데이터 저장
+  - View
+    + Buffer 데이터 CRUD 기준 정의
+    + 바이트 단위, 시작/끝 위치
+
+```
+// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data#Receiving_binary_data_using_JavaScript_typed_arrays
+var oReq = new XMLHttpRequest();
+oReq.open("GET", "/myfile.png", true);
+oReq.responseType = "arraybuffer";
+
+oReq.onload = function (oEvent) {
+  var arrayBuffer = oReq.response; // Note: not oReq.responseText
+  if (arrayBuffer) {
+    var byteArray = new Uint8Array(arrayBuffer);
+    for (var i = 0; i < byteArray.byteLength; i++) {
+      // do something with each byte in the array
+    }
+  }
+};
+
+oReq.send(null);
+```
+
+### ArrayBuffer
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+* The ArrayBuffer object is used to represent a generic, fixed-length raw binary data buffer. You cannot directly manipulate the contents of an ArrayBuffer; instead, you create one of the typed array objects or a DataView object which represents the buffer in a specific format, and use that to read and write the contents of the buffer.
+* new ArrayBuffer(length)
+
+```
+var buffer = new ArrayBuffer(8);
+var view   = new Int32Array(buffer); // [0, 0, 0, 0, 0, 0, 0, 0]
+```
+
+### get ArrayBuffer[@@species] (Firefox 48)
+
+* 
+
+```
+```
+
+### DataView
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
+
+```
+```
+
+### Int8Array
+
+* 
+
+```
+```
+
+### Uint8Array
+
+* 
+
+```
+```
+
+### Uint8ClampedArray
+
+* 
+
+```
+```
+
+### Int16Array
+
+* 
+
+```
+```
+
+### Uint16Array
+
+* 
+
+```
+```
+
+### Int32Array
+
+* 
+
+```
+```
+
+### Uint32Array
+
+* 
+
+```
+```
+
+### Float32Array
+
+* 
+
+```
+```
+
+### Float64Array
+
+* 
+
+```
+```
+
+### get %TypedArray%[@@species] (Firefox 48)
+
+* 
+
+```
+```
+
 
 ## Function
 ```
