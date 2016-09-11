@@ -2012,6 +2012,79 @@ p1.then(function(value) {
   - object[name]
   - Reflect.get(object, name)
 
+***
+
+## Map
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
+* new Map([iterable])
+
+```
+var kvArray = [["key1", "value1"], ["key2", "value2"]];
+
+// Use the regular Map constructor to transform a 2D key-value Array into a map
+var myMap = new Map(kvArray);
+```
+
+### Map.prototype.set(key, value)
+
+* 
+
+```
+```
+
+### Map.prototype.get(key)
+
+### with for ..of
+
+```
+var myMap = new Map();
+myMap.set(0, "zero");
+myMap.set(1, "one");
+for (var [key, value] of myMap) {
+  console.log(key + " = " + value);
+}
+// Will show 2 logs; first with "0 = zero" and second with "1 = one"
+
+for (var key of myMap.keys()) {
+  console.log(key);
+}
+// Will show 2 logs; first with "0" and second with "1"
+
+for (var value of myMap.values()) {
+  console.log(value);
+}
+// Will show 2 logs; first with "zero" and second with "one"
+
+for (var [key, value] of myMap.entries()) {
+  console.log(key + " = " + value);
+}
+// Will show 2 logs; first with "0 = zero" and second with "1 = one"
+```
+
+## Set
+
+* 
+
+```
+```
+
+## WeakMap
+
+* 
+
+```
+```
+
+## WeakSet
+
+* 
+
+```
+```
+
+
+
 ## Function
 ```
 ```
