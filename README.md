@@ -2001,6 +2001,16 @@ p1.then(function(value) {
 ```
 ```
 
+***
+
+## Reflect
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect
+* Reflect is a built-in object that provides methods for interceptable JavaScript operations. **The methods are the same as those of proxy handlers.** Reflect is not a function object, so it's not constructible.
+* 13 methods.
+* 형태
+  - object[name]
+  - Reflect.get(object, name)
 
 ## Function
 ```
