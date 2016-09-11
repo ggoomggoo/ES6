@@ -1766,6 +1766,241 @@ console.log(littleEndian); // true or false
 ```
 ```
 
+***
+
+## Promise
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+* The Promise object is **used for asynchronous computations**. A Promise represents a value which may be available now, or in the future, or never.
+* new Promise( /* executor */ function(resolve, reject) { ... } );
+* **자바스크립트는 기본적으로 동기 실행**
+* Promise: 비동기 실행(처리)
+  - XMLHttpReqeust의 비동기 처리와 흐름이 같음
+  - 코드를 연속하여 처리하지 않고 중간에 끊어짐
+  - 다음 코드를 처리 할 수있는 환경이 되었을 때 실행
+* 비동기 처리에 맞도록 코드 작성
+  - Promise 오브젝트에서 비동기 처리 메커니즘 제공
+* **DOM 스펙에서 Javascript로 전환**
+  - DOM에서도 사용 가능
+
+```
+function check() {
+  return new Promise(function(resolve, reject) {
+     console.log('resulve');
+     resolve();
+     resolve();
+     console.log('resulve');
+     reject();
+    });
+}
+
+check().then(function() {
+    console.log('성공');
+  }, function() {
+    console.log('실패');
+  });
+console.log('끝');
+```
+
+* states
+  - pending: initial state, not fulfilled or rejected.
+  - fulfilled: meaning that the operation completed successfully.
+  - rejected: meaning that the operation failed.
+
+```
+
+```
+
+* 내부 프로퍼티 설정
+  - [[Promise]]에 Promise 인스턴스
+  - [[Resolve]]에 resolve 오브젝트 설정
+  - [[Reject]]에 reject 오브젝트 설정
+  - [[PromiseStatus]]: "pending"
+  - [[PromiseValue]]: "ok"
+
+### Methods
+
+#### Promise.all()
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+* Promise.all(iterable);
+
+```
+function order(mili) {
+  return new Promise((resolve) => {
+
+    });
+}
+
+Promise.all([order(150), order(100), order(50)]).then((mili) => console.log(mili);)
+```
+
+```
+var p1 = Promise.resolve(3);
+var p2 = 1337;
+var p3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, "foo");
+}); 
+
+Promise.all([p1, p2, p3]).then(values => { 
+  console.log(values); // [3, 1337, "foo"] 
+});
+```
+
+#### Promise.race(iterable)
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race
+
+```
+var p1 = new Promise(function(resolve, reject) { 
+    setTimeout(resolve, 500, "one"); 
+});
+var p2 = new Promise(function(resolve, reject) { 
+    setTimeout(resolve, 100, "two"); 
+});
+
+Promise.race([p1, p2]).then(function(value) {
+  console.log(value); // "two"
+  // Both resolve, but p2 is faster
+});
+```
+
+#### Promise.resolve(value)
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
+* Returns a Promise object that is resolved with the given value. If the value is a thenable (i.e. has a then method), the returned promise will "follow" that thenable, adopting its eventual state; otherwise the returned promise will be fulfilled with the value. Generally, if you don't know if a value is a promise or not, Promise.resolve(value) it instead and work with the return value as a promise.
+* syntax
+  - Promise.resolve(value);
+  - Promise.resolve(promise);
+  - Promise.resolve(thenable);
+
+```
+Promise.resolve("Success").then(function(value) {
+  console.log(value); // "Success"
+}, function(value) {
+  // not called
+});
+```
+
+```
+var p = Promise.resolve([1,2,3]);
+p.then(function(v) {
+  console.log(v[0]); // 1
+});
+```
+
+```
+var original = Promise.resolve(true);
+var cast = Promise.resolve(original);
+cast.then(function(v) {
+  console.log(v); // true
+});
+
+```
+
+#### Promise.reject()
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/reject
+* Promise.reject(reason);
+
+```
+Promise.reject("Testing static reject").then(function(reason) {
+  // not called
+}, function(reason) {
+  console.log(reason); // "Testing static reject"
+});
+
+Promise.reject(new Error("fail")).then(function(error) {
+  // not called
+}, function(error) {
+  console.log(error); // Stacktrace
+});
+```
+
+#### Promise.prototype.then(onFulfilled, onRejected)
+
+* return 문 작성에 관계없이 Promise 인스턴스 반환
+* then().then() 형태에서 [[PromiseValue]] 값을 다음 then()의 파라미터 값으로 넘겨줌
+
+```
+function check() {
+
+}
+
+let two = check().then((param) => {
+    console.log('then-2: ', param);
+    return param + 50;
+  })
+```
+
+#### Promise.prototype.catch(onRejected)
+
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
+
+```
+var p1 = new Promise(function(resolve, reject) {
+  resolve('Success');
+});
+
+p1.then(function(value) {
+  console.log(value); // "Success!"
+  throw 'oh, no!';
+}).catch(function(e) {
+  console.log(e); // "oh, no!"
+}).then(function(){
+  console.log('after a catch the chain is restored');
+}, function () {
+  console.log('Not fired due to the catch');
+});
+
+// The following behaves the same as above
+p1.then(function(value) {
+  console.log(value); // "Success!"
+  return Promise.reject('oh, no!');
+}).catch(function(e) {
+  console.log(e); // "oh, no!"
+}).then(function(){
+  console.log('after a catch the chain is restored');
+}, function () {
+  console.log('Not fired due to the catch');
+});
+```
+
+### Examples
+
+* 
+
+```
+```
+
+### Creating a Promise
+
+* 
+
+```
+```
+
+### Example using XMLHttpRequest
+
+* 
+
+```
+```
+
+### Creating a Promise
+
+* 
+
+```
+```
+
+### Loading an image with XHR
+
+* 
+
+```
+```
+
 
 ## Function
 ```
